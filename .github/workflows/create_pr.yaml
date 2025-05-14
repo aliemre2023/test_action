@@ -1,5 +1,4 @@
 name: Create Pull Request with hello.txt
-
 on:
   push:
     branches:
@@ -12,34 +11,19 @@ permissions:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Set up git config
-        run: |
-          git config user.name "aliemre2023"
-          git config user.email "aliemrekaya239@gmail.com"
-
-      - name: Create a new branch
-        run: git checkout -b add-hello-file
-
       - name: Create hello.txt file
-        run: |
-          echo "github actions" > hello.txt
-          git add hello.txt
-          git commit -m "Add hello.txt file"
-
+        run: echo "github actions" > hello.txt
       
-      - name: Push branch
-        run: git push origin add-hello-file
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: add-hello-file
+          commit-message: "Add hello.txt file"
           title: "Add hello.txt"
           body: "This PR adds hello.txt file"
+          branch: add-hello-file
+          base: main

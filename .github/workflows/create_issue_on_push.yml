@@ -14,8 +14,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Create an issue
-        uses: peter-evans/create-issue@v5
+        uses: peter-evans/create-issue@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "An issue"
           body: "Hello from issue"
 

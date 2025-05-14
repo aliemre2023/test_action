@@ -14,20 +14,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Clone repository
+        run: |
+          git clone https://github.com/aliemre2023/test_action
+          cd test_action
+    
+      - name: Checkout 
+        run: git checkout -b hello_branch
 
-      - name: Pull latest changes
-        run: git pull origin main
+      - name: Info init
+        run: |
+          git config user.name "aliemre2023"
+          git config user.email "aliemrekaya239@gmail.com"
 
       - name: Create hello.txt file
-        run: echo "github actions" > hello.txt
-
-      - name: Commit changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b add-hello-file
+          echo "github actions" > hello.txt
           git add hello.txt
           git commit -m "Add hello.txt file"
       

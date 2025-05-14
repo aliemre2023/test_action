@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'code/**'
+    
+  
     
 permissions:
   contents: write
@@ -17,7 +21,7 @@ jobs:
         
       - name: Create test directory and hello.txt file
         run: |
-          mkdir test
+          mkdir -p test
           cd test
           echo "github actions" > hello.txt
       

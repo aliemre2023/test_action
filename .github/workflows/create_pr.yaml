@@ -14,24 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repository
-        run: |
-          git clone https://github.com/aliemre2023/test_action
-          cd test_action
-    
-      - name: Checkout 
-        run: git checkout -b hello_branch
-
-      - name: Info init
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up git config
         run: |
           git config user.name "aliemre2023"
           git config user.email "aliemrekaya239@gmail.com"
+
+      - name: Create a new branch
+        run: git checkout -b add-hello-file
 
       - name: Create hello.txt file
         run: |
           echo "github actions" > hello.txt
           git add hello.txt
           git commit -m "Add hello.txt file"
+
       
       - name: Push branch
         run: git push origin add-hello-file

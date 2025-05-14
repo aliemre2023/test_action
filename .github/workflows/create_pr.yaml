@@ -1,4 +1,4 @@
-name: Create Pull Request with hello.txt
+name: Create Pull Request with hello.txt in test directory
 on:
   push:
     branches:
@@ -15,19 +15,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Create hello.txt file
+      - name: Create test directory and hello.txt file
         run: |
-          mkdir test 
+          mkdir test
           cd test
           echo "github actions" > hello.txt
-
       
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add hello.txt file"
-          title: "Add hello.txt"
-          body: "This PR adds hello.txt file"
+          commit-message: "Add hello.txt in test directory"
+          title: "Add hello.txt in test directory"
+          body: "This PR adds test/hello.txt file"
           branch: add-hello-file
           base: main

@@ -25,6 +25,7 @@ jobs:
       - name: Run script to generate output.txt
         run: |
           python code/generate_txt.py
+          cat code/generate_txt.py
 
       - name: Create new branch
         run: |
@@ -39,11 +40,11 @@ jobs:
           git push --set-upstream origin auto/output-txt
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Auto-generate output.txt
           title: "Auto PR: Generate output.txt"
           body: "This PR was automatically created by GitHub Actions to add the generated output.txt file."
-          branch: auto/output-txt
+          branch: auto_output-txt
           base: main

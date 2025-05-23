@@ -26,6 +26,8 @@ jobs:
         run: |
           python code/generate_txt.py
           cat code/generate_txt.py
+          echo "---------"
+          cat code/output.txt
 
       - name: Create new branch
         run: |

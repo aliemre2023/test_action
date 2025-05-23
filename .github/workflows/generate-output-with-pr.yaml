@@ -37,7 +37,6 @@ jobs:
 
       - name: Commit generated file
         run: |
-          git checkout -b auto-output-txt
           git add output.txt
           git commit -m "Auto-generate output.txt"
           git push --force --set-upstream origin auto-output-txt

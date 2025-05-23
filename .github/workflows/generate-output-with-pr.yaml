@@ -35,9 +35,10 @@ jobs:
 
       - name: Commit generated file
         run: |
+          git checkout -b auto-output-txt
           git add output.txt
           git commit -m "Auto-generate output.txt"
-          git push --set-upstream origin auto/output-txt
+          git push --force --set-upstream origin auto-output-txt
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
@@ -46,5 +47,5 @@ jobs:
           commit-message: Auto-generate output.txt
           title: "Auto PR: Generate output.txt"
           body: "This PR was automatically created by GitHub Actions to add the generated output.txt file."
-          branch: auto_output-txt
+          branch: auto-output-txt
           base: main

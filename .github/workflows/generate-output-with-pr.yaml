@@ -37,10 +37,10 @@ jobs:
 
       - name: Commit generated file
         run: |
-          git add .
+          git add code/output.txt
           git commit -m "Auto-generate output.txt"
           git push --force --set-upstream origin auto-output-txt
-
+          
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:

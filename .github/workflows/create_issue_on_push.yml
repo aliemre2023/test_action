@@ -4,14 +4,20 @@ name: Create Issue on Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - main
+  
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Create an issue
         uses: peter-evans/create-issue@v4

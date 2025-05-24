@@ -16,10 +16,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create an issue
-        uses: peter-evans/create-issue@v4
+      - name: Create Issue From File
+        uses: peter-evans/create-issue-from-file@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "An issue"
-          body: "Hello from issue"
+          title: An example issue
+          content-filepath: ./txt.txt
+          labels: |
+            report
+            automated issue
 

@@ -1,4 +1,4 @@
-name: Create Pull Request with hello.txt
+name: Generate Test Send to PR
 on:
   push:
     branches:
@@ -27,15 +27,15 @@ jobs:
 
       - name: Run Python script
         run: |
-          cat code/tester.py
-          python code/tester.py
+          cat code/test_gen.py
+          python code/test_gen.py
       
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add hello.txt file"
-          title: "Add hello.txt"
-          body: "This PR adds hello.txt file"
-          branch: add-hello-file
+          commit-message: "Add test file"
+          title: "Add test file"
+          body: "This PR adds test file"
+          branch: add-test-file
           base: main

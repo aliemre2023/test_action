@@ -16,7 +16,7 @@ if __name__ == "__main__":
     print("Testing complete!")
 '''
     
-    with open("code/tester.py", "w") as f:
+    with open("test/tester.py", "w") as f:
         f.write(test_content)
     
     print("Test file created successfully at code/tester.py")

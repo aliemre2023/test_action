@@ -28,8 +28,8 @@ jobs:
         
       - name: Run Python script
         run: |
-          cat code/test_gen.py
-          python code/test_gen.py
+          cat code/document.py
+          python code/document.py
       
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7

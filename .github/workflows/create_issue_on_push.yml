@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Create Issue on Push
 
 on:
@@ -12,9 +10,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
+  create-issue:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

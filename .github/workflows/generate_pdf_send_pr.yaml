@@ -35,8 +35,8 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add hello.txt file"
-          title: "Add hello.txt"
-          body: "This PR adds hello.txt file"
-          branch: add-hello-file
+          commit-message: "Documentation prepared"
+          title: "Documentation prepared"
+          body: "This PR adds Documentation file"
+          branch: add-documentation-file
           base: main

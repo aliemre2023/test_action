@@ -31,8 +31,8 @@ jobs:
         
       - name: Run Python script
         run: |
-          cat code/commenter.py
-          python code/commenter.py
+          cat code/deepseek_commenter.py
+          python code/deepseek_commenter.py
 
       - name: Comment on the latest commit
         env:

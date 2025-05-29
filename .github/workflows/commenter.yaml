@@ -13,16 +13,40 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Save Git Diff to File
+        run: git diff > code/temp/diff.txt
+
+       - name: Install dependencies requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        
+      - name: Run Python script
+        run: |
+          cat code/commenter.py
+          python code/commenter.py
 
       - name: Comment on the latest commit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           COMMIT_SHA=${{ github.sha }}
+          COMMENT_BODY=$(cat code/temp/explanation.txt)
           gh api \
             -H "Accept: application/vnd.github+json" \
             -X POST \
             /repos/${{ github.repository }}/commits/$COMMIT_SHA/comments \
-            -f body="✅ Good job! This commit looks great 👍"
+            -f body="$COMMENT_BODY"
+
+        - name: Empty Files
+        run: |
+          echo "" > code/temp/diff.txt
+          echo "" > code/temp/explanation.txt

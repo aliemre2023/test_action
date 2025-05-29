@@ -22,17 +22,19 @@ if len(diff_content) > MAX_CHARS:
     diff_content = diff_content[-MAX_CHARS:]
     print(f"[DEBUG] Trimmed diff to last {MAX_CHARS} characters")
 
-api_key = os.getenv("OPENAI_API_KEY", "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")
+api_key = os.getenv("OPENAI_API_KEY", "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")
 
-# Use direct HTTP requests instead of OpenAI client
+# Fix the OpenRouter API URL - it should end with /chat/completions
 url = "https://openrouter.ai/api/v1/chat/completions"
 headers = {
     "Authorization": f"Bearer {api_key}",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "HTTP-Referer": "https://github.com/your-repo",  # OpenRouter requires this
+    "X-Title": "Git Diff Summarizer"  # Optional but recommended
 }
 
 payload = {
-    "model": "deepseek/deepseek-r1-0528",
+    "model": "deepseek/deepseek-r1",  # Updated model name
     "max_tokens": 1000,
     "temperature": 0.7,
     "messages": [
@@ -45,29 +47,57 @@ payload = {
             "content": (
                 "Please summarize the following git diff changes:\n\n"
                 f"{diff_content}\n\n"
-                "Explain briefly what was changed. Keep the summary concise and under 200 words."
+                "Explain briefly what was changed (only in src/* directory). Keep the summary concise and under 200 words."
             )
         }
     ]
 }
 
+print(f"[DEBUG] Making request to: {url}")
+print(f"[DEBUG] Using model: {payload['model']}")
+
 try:
     response = requests.post(url, headers=headers, json=payload, timeout=60)
+    print(f"[DEBUG] Response status code: {response.status_code}")
+    print(f"[DEBUG] Response headers: {dict(response.headers)}")
+    print(f"[DEBUG] Raw response text: {response.text[:500]}...")  # First 500 chars
+    
     response.raise_for_status()
-    resp_data = response.json()
-except requests.exceptions.RequestException as e:
-    print(f"[ERROR] HTTP request failed: {e}")
+    
+    # Check if response is empty
+    if not response.text.strip():
+        print("[ERROR] Empty response from API")
+        sys.exit(1)
+    
+    try:
+        resp_data = response.json()
+    except json.JSONDecodeError as json_err:
+        print(f"[ERROR] Failed to parse JSON response: {json_err}")
+        print(f"[DEBUG] Raw response: {response.text}")
+        sys.exit(1)
+        
+except requests.exceptions.HTTPError as http_err:
+    print(f"[ERROR] HTTP error occurred: {http_err}")
+    print(f"[DEBUG] Response text: {response.text}")
     sys.exit(1)
-except json.JSONDecodeError as e:
-    print(f"[ERROR] Failed to parse JSON response: {e}")
+except requests.exceptions.RequestException as req_err:
+    print(f"[ERROR] Request failed: {req_err}")
     sys.exit(1)
 
-print(f"[DEBUG] Full response object:\n{resp_data}")
+print(f"[DEBUG] Full response object:\n{json.dumps(resp_data, indent=2)}")
+
+# Check for API errors in response
+if 'error' in resp_data:
+    print(f"[ERROR] API returned error: {resp_data['error']}")
+    sys.exit(1)
 
 try:
     explanation = resp_data['choices'][0]['message']['content'].strip()
 except (KeyError, IndexError) as e:
     print(f"[ERROR] Unexpected response structure: {e}")
+    print(f"[DEBUG] Available keys in response: {list(resp_data.keys())}")
+    if 'choices' in resp_data and resp_data['choices']:
+        print(f"[DEBUG] Available keys in first choice: {list(resp_data['choices'][0].keys())}")
     sys.exit(1)
 
 if explanation == "":

@@ -1,21 +1,19 @@
-Here's a concise summary of the changes:
+The changes enhance a GitHub Actions workflow and Python script for automated code diff analysis:
 
-1. **GitHub Workflow Update**:
-   - Upgraded `actions/checkout` from v3 to v4
-   - Added Python 3.10 setup step
-   - Implemented diff capture to `diff.txt`
+1. **Workflow Updates**:
+   - Upgraded checkout action to v4
+   - Added Python 3.10 setup
+   - Implemented diff file handling (save/clear)
    - Added dependency installation and script execution steps
-   - Included cleanup step for diff file
 
-2. **Python Script Changes**:
-   - Replaced CLI argument input with file-based diff reading
-   - Added ASCII sanitization and length truncation (60k chars max)
-   - Enhanced error handling with try/except blocks
-   - Added debug logging and output validation
-   - Now writes summary to `explanation.txt` file
-   - Uses environment variable for API key with fallback
+2. **Script Improvements**:
+   - Added text cleaning/truncation for large diffs
+   - Environment variable support for API key
+   - Enhanced error handling/logging
+   - Output saving to explanation.txt
+   - System prompt standardization
 
 3. **Dependencies**:
-   - Added `openai==1.55.0` to requirements.txt
+   - Added openai==1.55.0 to requirements.txt
 
-The changes automate diff processing, improve error resilience, and transition to file-based I/O instead of CLI arguments.
+The changes improve reliability, add debugging capabilities, and formalize the diff processing workflow while maintaining the core functionality of generating AI-powered code change summaries.

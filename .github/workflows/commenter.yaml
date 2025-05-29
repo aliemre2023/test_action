@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,7 +24,10 @@ jobs:
           python-version: '3.10'
 
       - name: Save Git Diff to File
-        run: git diff > code/temp/diff.txt
+        run: |
+          # Get diff between current commit and previous commit
+          git diff HEAD~1 HEAD > code/temp/diff.txt
+          echo "Diff file size: $(wc -c < code/temp/diff.txt) bytes"
 
       - name: Install dependencies requirements.txt
         run: |
@@ -38,13 +43,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          COMMIT_SHA=${{ github.sha }}
-          COMMENT_BODY=$(cat code/temp/explanation.txt)
-          gh api \
-            -H "Accept: application/vnd.github+json" \
-            -X POST \
-            /repos/${{ github.repository }}/commits/$COMMIT_SHA/comments \
-            -f body="$COMMENT_BODY"
+          if [ -f code/temp/explanation.txt ] && [ -s code/temp/explanation.txt ]; then
+            COMMIT_SHA=${{ github.sha }}
+            COMMENT_BODY=$(cat code/temp/explanation.txt)
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              -X POST \
+              /repos/${{ github.repository }}/commits/$COMMIT_SHA/comments \
+              -f body="$COMMENT_BODY"
+            echo "Comment posted successfully"
+          else
+            echo "No explanation file found or file is empty"
+          fi
 
       - name: Empty Files
         run: |

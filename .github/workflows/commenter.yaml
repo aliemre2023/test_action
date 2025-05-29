@@ -46,7 +46,7 @@ jobs:
             /repos/${{ github.repository }}/commits/$COMMIT_SHA/comments \
             -f body="$COMMENT_BODY"
 
-        - name: Empty Files
+      - name: Empty Files
         run: |
           echo "" > code/temp/diff.txt
           echo "" > code/temp/explanation.txt
